@@ -31,4 +31,149 @@ When added to a simple minimax algorithm, it gives the same output but cuts off 
 ![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/440797bd-53cb-49c1-b18d-89776864c3e7)
 ![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/81575a16-26b2-46f1-a8ac-27c9ed0a0fe5)
 
+<h2>PROGRAM</h2>
 
+```
+
+# Tic-Tac-Toe using Alpha-Beta Pruning
+
+board = [" " for i in range(9)]
+
+def display():
+    print(board[0], "|", board[1], "|", board[2])
+    print("--+---+--")
+    print(board[3], "|", board[4], "|", board[5])
+    print("--+---+--")
+    print(board[6], "|", board[7], "|", board[8])
+
+
+def win(player):
+    combinations = [
+        [0,1,2], [3,4,5], [6,7,8],
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]
+    ]
+
+    for c in combinations:
+        if board[c[0]] == board[c[1]] == board[c[2]] == player:
+            return True
+
+    return False
+
+
+def alphabeta(is_max, alpha, beta):
+
+    if win("O"):
+        return 1
+
+    if win("X"):
+        return -1
+
+    if " " not in board:
+        return 0
+
+    if is_max:
+        best = -100
+
+        for i in range(9):
+            if board[i] == " ":
+                board[i] = "O"
+
+                score = alphabeta(False, alpha, beta)
+
+                board[i] = " "
+
+                best = max(best, score)
+                alpha = max(alpha, best)
+
+                if beta <= alpha:
+                    break
+
+        return best
+
+    else:
+        best = 100
+
+        for i in range(9):
+            if board[i] == " ":
+                board[i] = "X"
+
+                score = alphabeta(True, alpha, beta)
+
+                board[i] = " "
+
+                best = min(best, score)
+                beta = min(beta, best)
+
+                if beta <= alpha:
+                    break
+
+        return best
+
+
+def computer_move():
+    best_score = -100
+    move = 0
+
+    for i in range(9):
+        if board[i] == " ":
+            board[i] = "O"
+
+            score = alphabeta(False, -100, 100)
+
+            board[i] = " "
+
+            if score > best_score:
+                best_score = score
+                move = i
+
+    board[move] = "O"
+
+
+# Main program
+print("TIC-TAC-TOE")
+print("You = X")
+print("Computer = O")
+
+while True:
+
+    display()
+
+    # Player move
+    pos = int(input("Enter position (1-9): ")) - 1
+
+    if board[pos] != " ":
+        print("Position already occupied!")
+        continue
+
+    board[pos] = "X"
+
+    if win("X"):
+        display()
+        print("You Win!")
+        break
+
+    if " " not in board:
+        display()
+        print("Draw!")
+        break
+
+    # Computer move
+    computer_move()
+
+    if win("O"):
+        display()
+        print("Computer Wins!")
+        break
+
+    if " " not in board:
+        display()
+        print("Draw!")
+        break
+
+
+```
+<h2>OUTPUT</h2>
+<img width="1208" height="644" alt="image" src="https://github.com/user-attachments/assets/caee1903-f056-43f5-8dda-792cfbe9460f" />
+<H2>RESULT </H2>
+<P>WE GOT THE OUPUT SUCCESSFUL</P>
